@@ -13,11 +13,11 @@ class WatchListRowMapper implements RowMapper<WatchList> {
     @Override
     public WatchList mapRow(ResultSet rs, int rowNum) throws SQLException {
         WatchList watchlist = new WatchList();
-        watchlist.setWatchlist_id(rs.getLong("watchlist_id"));
-        watchlist.setUser_id(rs.getLong("user_id"));
-        watchlist.setWatchlist_name(rs.getString("watchlist_name"));
-        watchlist.setWatchlist_description(rs.getString("watchlist_description"));
-        watchlist.setWatchlist_privacy(rs.getBoolean("watchlist_privacy"));
+        watchlist.setIdWatchList(rs.getLong("id_watchlist"));
+        watchlist.setIdUser(rs.getLong("id_user"));
+        watchlist.setWatchListName(rs.getString("watchlist_name"));
+        watchlist.setWatchListDescription(rs.getString("watchlist_description"));
+        watchlist.setWatchListPrivacy(rs.getBoolean("watchlist_privacy"));
         return watchlist;
     }
 }

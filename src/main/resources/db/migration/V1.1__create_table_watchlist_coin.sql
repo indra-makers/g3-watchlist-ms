@@ -1,6 +1,6 @@
-create table watchlist_coin(
-    watchlist_coin_id serial primary key,
-    watchlist_id bigint NOT NULL,
-    symbol varchar(25) NOT NULL,
-    CONSTRAINT fk_watchlist_id FOREIGN KEY (watchlist_id) REFERENCES watchlist(watchlist_id)
+create table tbl_watchlists_coins(
+    id_watchlist_coin serial primary key,
+    id_watchlist bigint NOT NULL,
+    symbol varchar(5) NOT NULL,
+    CONSTRAINT fk_id_watchlist FOREIGN KEY (id_watchlist) REFERENCES tbl_watchlists(id_watchlist)
 )
