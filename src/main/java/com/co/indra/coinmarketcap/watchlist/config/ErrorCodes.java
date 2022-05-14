@@ -2,7 +2,10 @@ package com.co.indra.coinmarketcap.watchlist.config;
 
 public enum ErrorCodes {
 
-    WATCHLIST_LIMIT_REACHED("The watchlist limit has been reached", "001");
+    WATCHLIST_LIMIT_REACHED("The watchlist limit has been reached", "001"),
+    SYMBOL_EXISTS_IN_WATCHLIST("The coin symbol is already registered on the watchlist", "002"),
+    MISSING_PARAMETERS("Missing some parameters to add watchlist", "003"),
+    MISSING_COIN_PARAMETERS("Missing some parameters to add coin", "004");
 
     String message;
     String code;
