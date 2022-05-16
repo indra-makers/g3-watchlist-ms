@@ -12,7 +12,7 @@ import com.co.indra.coinmarketcap.watchlist.config.Routes;
 public class WatchListController {
 
     @Autowired
-    WatchListService watchListService;
+    private WatchListService watchListService;
 
     @PostMapping
     public void createWatchlist(@RequestBody WatchList watchList){
@@ -20,7 +20,7 @@ public class WatchListController {
     }
 
     @PostMapping(Routes.ADD_COIN_TO_WATCHLIST)
-    public void addCoinToWatchList(@PathVariable (name = "watchlist_id") Long idWatchList, @RequestBody WatchListCoin watchListCoin){
+    public void addCoinToWatchList(@PathVariable (name = "idWatchlist") Long idWatchList, @RequestBody WatchListCoin watchListCoin){
         watchListService.addCoinToWatchList(watchListCoin, idWatchList);
     }
 

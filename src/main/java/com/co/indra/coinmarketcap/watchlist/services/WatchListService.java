@@ -13,9 +13,9 @@ import org.springframework.stereotype.Service;
 public class WatchListService {
 
     @Autowired
-    WatchListRepository watchListRepository;
+    private WatchListRepository watchListRepository;
     @Autowired
-    WatchListCoinRepository watchListCoinRepository;
+    private WatchListCoinRepository watchListCoinRepository;
 
     public void createWatchList(WatchList watchList){
         if(watchList.getIdUser() == null){
