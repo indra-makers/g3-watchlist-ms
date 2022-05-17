@@ -88,7 +88,7 @@ public class WatchListControllerTest {
     @Sql("/testdata/addCoinToWatchListHappy.sql")
     public void addCoinToWatchListHappy() throws Exception {
         MockHttpServletRequestBuilder request = MockMvcRequestBuilders
-                .post(Routes.WATCHLIST_RESOURCE+Routes.ADD_COIN_TO_WATCHLIST, "999")
+                .post(Routes.WATCHLIST_RESOURCE + Routes.ADD_COIN_TO_WATCHLIST, "999")
                 .content("{\n" +
                         "    \"symbol\": \"ZZZ\"\n" +
                         "}").contentType(MediaType.APPLICATION_JSON);
@@ -107,7 +107,7 @@ public class WatchListControllerTest {
     @Test
     public void addCoinToNoWatchList() throws Exception {
         MockHttpServletRequestBuilder request = MockMvcRequestBuilders
-                .post(Routes.WATCHLIST_RESOURCE+Routes.ADD_COIN_TO_WATCHLIST, "999")
+                .post(Routes.WATCHLIST_RESOURCE + Routes.ADD_COIN_TO_WATCHLIST, "999")
                 .content("{\n" +
                         "    \"symbol\": \"ZZZ\"\n" +
                         "}").contentType(MediaType.APPLICATION_JSON);
@@ -120,7 +120,7 @@ public class WatchListControllerTest {
     @Sql("/testdata/addCoinToWatchListSameCoin.sql")
     public void addCoinToWatchListSameCoin() throws Exception {
         MockHttpServletRequestBuilder request = MockMvcRequestBuilders
-                .post(Routes.WATCHLIST_RESOURCE+Routes.ADD_COIN_TO_WATCHLIST, "999")
+                .post(Routes.WATCHLIST_RESOURCE + Routes.ADD_COIN_TO_WATCHLIST, "999")
                 .content("{\n" +
                         "    \"symbol\": \"ZZZ\"\n" +
                         "}").contentType(MediaType.APPLICATION_JSON);
@@ -139,7 +139,7 @@ public class WatchListControllerTest {
     @Sql("/testdata/addCoinToWatchListHappy.sql")
     public void addNoCoinToWatchListSameCoin() throws Exception {
         MockHttpServletRequestBuilder request = MockMvcRequestBuilders
-                .post(Routes.WATCHLIST_RESOURCE+Routes.ADD_COIN_TO_WATCHLIST, "999")
+                .post(Routes.WATCHLIST_RESOURCE + Routes.ADD_COIN_TO_WATCHLIST, "999")
                 .content("{\n" +
                         "}").contentType(MediaType.APPLICATION_JSON);
 
@@ -153,4 +153,31 @@ public class WatchListControllerTest {
         Assertions.assertEquals("Missing some parameters to add coin", error.getMessage());
     }
 
+    @Test
+    public void getWatchlistUser() throws Exception {
+        //----la ejecucion de la prueba misma--------------
+        MockHttpServletRequestBuilder request = MockMvcRequestBuilders
+                .get("/watchlists?idUser=15")
+                .contentType(MediaType.APPLICATION_JSON);
+
+        MockHttpServletResponse response = mockMvc.perform(request).andReturn().getResponse();
+        //------------ las verificaciones--------------------
+        Assertions.assertEquals(200, response.getStatus());
+
+        WatchList[] watchLists = objectMapper.readValue(response.getContentAsString(), WatchList[].class);
+        Assertions.assertEquals(4, watchLists.length);
+
+    }
+    @Test
+    public void getWatchlistUserDoesNotExist() throws Exception {
+        //----la ejecucion de la prueba misma--------------
+        MockHttpServletRequestBuilder request = MockMvcRequestBuilders
+                .get("/watchlists?idUser=17")
+                .contentType(MediaType.APPLICATION_JSON);
+
+        MockHttpServletResponse response = mockMvc.perform(request).andReturn().getResponse();
+        //------------ las verificaciones--------------------
+        Assertions.assertEquals(404, response.getStatus());
+    }
 }
+

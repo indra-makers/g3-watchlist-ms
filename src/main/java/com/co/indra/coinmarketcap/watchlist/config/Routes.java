@@ -7,4 +7,5 @@ public class Routes {
     public static final String GET_COIN_FROM_WATCHLIST = "/{idWatchlist}/coins";
     public static final String DELETE_COIN_FROM_WATCHLIST = "/{idWatchlist}/coins/{symbol}";
     public static final String WATCHLIST_COIN_RESOURCE = "/watchlistcoins";
+
 }

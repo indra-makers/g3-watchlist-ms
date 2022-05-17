@@ -1,12 +1,15 @@
 package com.co.indra.coinmarketcap.watchlist.services;
 import com.co.indra.coinmarketcap.watchlist.config.ErrorCodes;
 import com.co.indra.coinmarketcap.watchlist.exceptions.BusinessExceptions;
+import com.co.indra.coinmarketcap.watchlist.exceptions.NotFoundException;
 import com.co.indra.coinmarketcap.watchlist.model.entities.WatchList;
 import com.co.indra.coinmarketcap.watchlist.model.entities.WatchListCoin;
 import com.co.indra.coinmarketcap.watchlist.repositories.WatchListCoinRepository;
 import com.co.indra.coinmarketcap.watchlist.repositories.WatchListRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 
 @Service
@@ -31,5 +34,10 @@ public class WatchListService {
             throw new BusinessExceptions(ErrorCodes.MISSING_COIN_PARAMETERS);
         }
         watchListCoinRepository.addCoinToWatchList(watchListCoin, idWatchList);
+    }
+    public List<WatchList> getWatchlist(Long idUser) {
+        if(watchListRepository.findWatchListByUserId(idUser).isEmpty()){
+            throw new NotFoundException(ErrorCodes.USER_DOES_NOT_EXIST);}
+        return  watchListRepository.findWatchListByUserId(idUser);
     }
 }
