@@ -6,6 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import com.co.indra.coinmarketcap.watchlist.config.Routes;
 
+import java.util.List;
+
 
 @RestController
 @RequestMapping(Routes.WATCHLIST_RESOURCE)
@@ -22,6 +24,10 @@ public class WatchListController {
     @PostMapping(Routes.ADD_COIN_TO_WATCHLIST)
     public void addCoinToWatchList(@PathVariable (name = "idWatchlist") Long idWatchList, @RequestBody WatchListCoin watchListCoin){
         watchListService.addCoinToWatchList(watchListCoin, idWatchList);
+    }
+    @GetMapping()
+    public List<WatchList> getWatchlistByUserId(@RequestParam(name="idUser") Long idUser) {
+        return watchListService.getWatchlist(idUser);
     }
 
 

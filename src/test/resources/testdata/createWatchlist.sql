@@ -1,0 +1,4 @@
+INSERT INTO tbl_watchlists(id_watchlist, id_user, watchlist_name, watchlist_description, is_private) values(997, 300,'Mi primera watchlist','Aqui va la descripcion',false);
+INSERT INTO tbl_watchlists(id_watchlist, id_user, watchlist_name, watchlist_description, is_private) values(998, 300,'Mi segunda watchlist','Aqui va la descripcion',false);
+INSERT INTO tbl_watchlists(id_watchlist, id_user, watchlist_name, watchlist_description, is_private) values(999, 300,'Mi tercera watchlist','Aqui va la descripcion',false);
+INSERT INTO tbl_watchlists(id_watchlist, id_user, watchlist_name, watchlist_description, is_private) values(1000, 300,'Mi cuarta watchlist','Aqui va la descripcion',false);
