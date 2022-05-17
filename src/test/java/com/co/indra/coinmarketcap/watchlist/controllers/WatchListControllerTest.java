@@ -154,10 +154,11 @@ public class WatchListControllerTest {
     }
 
     @Test
+    @Sql("/testdata/createWatchlist.sql")
     public void getWatchlistUser() throws Exception {
         //----la ejecucion de la prueba misma--------------
         MockHttpServletRequestBuilder request = MockMvcRequestBuilders
-                .get("/watchlists?idUser=?")
+                .get(Routes.WATCHLIST_RESOURCE+"?idUser=300")
                 .contentType(MediaType.APPLICATION_JSON);
 
         MockHttpServletResponse response = mockMvc.perform(request).andReturn().getResponse();
@@ -172,7 +173,7 @@ public class WatchListControllerTest {
     public void getWatchlistUserDoesNotExist() throws Exception {
         //----la ejecucion de la prueba misma--------------
         MockHttpServletRequestBuilder request = MockMvcRequestBuilders
-                .get("/watchlists?idUser=?")
+                .get(Routes.WATCHLIST_RESOURCE+"?idUser=17")
                 .contentType(MediaType.APPLICATION_JSON);
 
         MockHttpServletResponse response = mockMvc.perform(request).andReturn().getResponse();
