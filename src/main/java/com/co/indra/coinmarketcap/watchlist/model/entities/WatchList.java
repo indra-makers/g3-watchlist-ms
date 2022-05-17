@@ -7,17 +7,17 @@ public class WatchList implements Serializable {
     private Long idUser;
     private String watchListName;
     private String watchListDescription;
-    private boolean watchListPrivacy;
+    private boolean isPrivate;
 
     public WatchList() {
     }
 
-    public WatchList(Long idWatchList, Long idUser, String watchListName, String watchListDescription, boolean watchListPrivacy) {
+    public WatchList(Long idWatchList, Long idUser, String watchListName, String watchListDescription, boolean isPrivate) {
         this.idWatchList = idWatchList;
         this.idUser = idUser;
         this.watchListName = watchListName;
         this.watchListDescription = watchListDescription;
-        this.watchListPrivacy = watchListPrivacy;
+        this.isPrivate = isPrivate;
     }
 
     public Long getIdWatchList() {
@@ -52,11 +52,11 @@ public class WatchList implements Serializable {
         this.watchListDescription = watchListDescription;
     }
 
-    public boolean isWatchListPrivacy() {
-        return watchListPrivacy;
+    public boolean isPrivate() {
+        return isPrivate;
     }
 
-    public void setWatchListPrivacy(boolean watchListPrivacy) {
-        this.watchListPrivacy = watchListPrivacy;
+    public void setPrivate(boolean aPrivate) {
+        isPrivate = aPrivate;
     }
 }

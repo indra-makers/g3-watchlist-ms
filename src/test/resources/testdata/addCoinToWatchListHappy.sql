@@ -1,0 +1,1 @@
+INSERT INTO tbl_watchlists(id_watchlist, id_user, watchlist_name, watchlist_description, is_private) values(999, 5,'Mi primera watchlist','Aqui va la descripcion',false);
