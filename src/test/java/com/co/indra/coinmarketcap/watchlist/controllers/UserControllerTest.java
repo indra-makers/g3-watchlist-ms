@@ -36,7 +36,7 @@ public class UserControllerTest {
     private ObjectMapper objectMapper;
 
     @Test
-    //@Sql("/testdata/createWatchlist.sql")
+    @Sql("/testdata/createWatchlist.sql")
     public void getWatchlistUser() throws Exception {
         //----la ejecucion de la prueba misma--------------
         MockHttpServletRequestBuilder request = MockMvcRequestBuilders
