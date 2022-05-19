@@ -14,7 +14,7 @@ public class WatchListCoinController {
     @Autowired
     private WatchListCoinService watchListCoinService;
     
-    //Eliminar los datos de envio por medio del id Notifications FK
+    //Eliminar los datos de envio por medio del idWatchList FK
     @DeleteMapping ("/{idWatchList}")
     public void removeCoinToWatchList(@PathVariable("idWatchList") Long idWatchList){
        watchListCoinService.removeCoinToWatchList(idWatchList);
