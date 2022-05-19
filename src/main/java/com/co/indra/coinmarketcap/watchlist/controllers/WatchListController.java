@@ -25,10 +25,5 @@ public class WatchListController {
     public void addCoinToWatchList(@PathVariable (name = "idWatchlist") Long idWatchList, @RequestBody WatchListCoin watchListCoin){
         watchListService.addCoinToWatchList(watchListCoin, idWatchList);
     }
-    @GetMapping()
-    public List<WatchList> getWatchlistByUserId(@RequestParam(name="idUser") Long idUser) {
-        return watchListService.getWatchlist(idUser);
-    }
-
 
 }
