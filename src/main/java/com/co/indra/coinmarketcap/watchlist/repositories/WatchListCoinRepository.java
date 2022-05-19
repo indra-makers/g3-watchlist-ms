@@ -42,4 +42,13 @@ public class WatchListCoinRepository {
                 new WatchListCoinRowMapper(),
                 id_watchlist);
     }
+    
+    //Eliminar moneda a watchlist
+    public void deleteCoinToWatchList(Long idWatchList){
+
+       template.update("DELETE FROM tbl_watchlists_coins WHERE id_watchlist = ?",
+             idWatchList);
+
+   }
+    
 }
