@@ -2,6 +2,8 @@ package com.co.indra.coinmarketcap.watchlist.controllers;
 import com.co.indra.coinmarketcap.watchlist.config.Routes;
 import com.co.indra.coinmarketcap.watchlist.services.WatchListCoinService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -11,5 +13,12 @@ public class WatchListCoinController {
 
     @Autowired
     private WatchListCoinService watchListCoinService;
+    
+    //Eliminar los datos de envio por medio del id Notifications FK
+    @DeleteMapping ("/{idWatchList}")
+    public void removeCoinToWatchList(@PathVariable("idWatchList") Long idWatchList){
+       watchListCoinService.removeCoinToWatchList(idWatchList);
+       
+    }
 
 }

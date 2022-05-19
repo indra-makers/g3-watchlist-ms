@@ -8,5 +8,10 @@ public class WatchListCoinService {
 
     @Autowired
     private WatchListCoinRepository watchListCoinRepository;
+    
+    public void removeCoinToWatchList(Long idWatchList){
+       watchListCoinRepository.deleteCoinToWatchList(idWatchList);
+       
+   }
 
 }
