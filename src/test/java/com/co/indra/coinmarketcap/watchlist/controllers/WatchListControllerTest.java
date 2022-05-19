@@ -153,32 +153,5 @@ public class WatchListControllerTest {
         Assertions.assertEquals("Missing some parameters to add coin", error.getMessage());
     }
 
-    @Test
-    @Sql("/testdata/createWatchlist.sql")
-    public void getWatchlistUser() throws Exception {
-        //----la ejecucion de la prueba misma--------------
-        MockHttpServletRequestBuilder request = MockMvcRequestBuilders
-                .get(Routes.WATCHLIST_RESOURCE+"?idUser=300")
-                .contentType(MediaType.APPLICATION_JSON);
-
-        MockHttpServletResponse response = mockMvc.perform(request).andReturn().getResponse();
-        //------------ las verificaciones--------------------
-        Assertions.assertEquals(200, response.getStatus());
-
-        WatchList[] watchLists = objectMapper.readValue(response.getContentAsString(), WatchList[].class);
-        Assertions.assertEquals(4, watchLists.length);
-
-    }
-    @Test
-    public void getWatchlistUserDoesNotExist() throws Exception {
-        //----la ejecucion de la prueba misma--------------
-        MockHttpServletRequestBuilder request = MockMvcRequestBuilders
-                .get(Routes.WATCHLIST_RESOURCE+"?idUser=17")
-                .contentType(MediaType.APPLICATION_JSON);
-
-        MockHttpServletResponse response = mockMvc.perform(request).andReturn().getResponse();
-        //------------ las verificaciones--------------------
-        Assertions.assertEquals(404, response.getStatus());
-    }
 }
 
