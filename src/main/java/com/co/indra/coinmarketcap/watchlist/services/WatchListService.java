@@ -1,4 +1,5 @@
 package com.co.indra.coinmarketcap.watchlist.services;
+
 import com.co.indra.coinmarketcap.watchlist.config.ErrorCodes;
 import com.co.indra.coinmarketcap.watchlist.exceptions.BusinessExceptions;
 import com.co.indra.coinmarketcap.watchlist.exceptions.NotFoundException;
@@ -11,33 +12,34 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-
 @Service
 public class WatchListService {
 
-    @Autowired
-    private WatchListRepository watchListRepository;
-    @Autowired
-    private WatchListCoinRepository watchListCoinRepository;
+   @Autowired
+   private WatchListRepository watchListRepository;
+   @Autowired
+   private WatchListCoinRepository watchListCoinRepository;
 
-    public void createWatchList(WatchList watchList){
-        if(watchList.getIdUser() == null){
-            throw new BusinessExceptions(ErrorCodes.MISSING_PARAMETERS);
-        }
-        watchListRepository.createWatchlist(watchList);
-    }
-    public void addCoinToWatchList(WatchListCoin watchListCoin, Long idWatchList){
-        if (!watchListCoinRepository.findWatchListCoinBySymbol(watchListCoin.getSymbol()).isEmpty()){
-            throw new BusinessExceptions(ErrorCodes.SYMBOL_EXISTS_IN_WATCHLIST);
-        }
-        else if(watchListCoin.getSymbol() == null){
-            throw new BusinessExceptions(ErrorCodes.MISSING_COIN_PARAMETERS);
-        }
-        watchListCoinRepository.addCoinToWatchList(watchListCoin, idWatchList);
-    }
-    public List<WatchList> getWatchlist(Long idUser) {
-        if(watchListRepository.findWatchListByUserId(idUser).isEmpty()){
-            throw new NotFoundException(ErrorCodes.USER_DOES_NOT_EXIST);}
-        return  watchListRepository.findWatchListByUserId(idUser);
-    }
+   public void createWatchList(WatchList watchList) {
+      if (watchList.getIdUser() == null) {
+         throw new BusinessExceptions(ErrorCodes.MISSING_PARAMETERS);
+      }
+      watchListRepository.createWatchlist(watchList);
+   }
+
+   public void addCoinToWatchList(WatchListCoin watchListCoin, Long idWatchList) {
+      if (!watchListCoinRepository.findWatchListCoinBySymbol(watchListCoin.getSymbol()).isEmpty()) {
+         throw new BusinessExceptions(ErrorCodes.SYMBOL_EXISTS_IN_WATCHLIST);
+      } else if (watchListCoin.getSymbol() == null) {
+         throw new BusinessExceptions(ErrorCodes.MISSING_COIN_PARAMETERS);
+      }
+      watchListCoinRepository.addCoinToWatchList(watchListCoin, idWatchList);
+   }
+
+   public List<WatchList> getWatchlist(Long idUser) {
+      if (watchListRepository.findWatchListByUserId(idUser).isEmpty()) {
+         throw new NotFoundException(ErrorCodes.USER_DOES_NOT_EXIST);
+      }
+      return watchListRepository.findWatchListByUserId(idUser);
+   }
 }
