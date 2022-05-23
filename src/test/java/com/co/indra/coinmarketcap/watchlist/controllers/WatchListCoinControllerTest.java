@@ -33,7 +33,7 @@ public class WatchListCoinControllerTest {
    @Sql("/testdata/createCoinToWatchlist.sql")
    public void removeCoinToWatchList() throws Exception {
 
-      MockHttpServletRequestBuilder requestRemoveCoinToWatchList = MockMvcRequestBuilders.delete("/watchlistcoins/187")
+      MockHttpServletRequestBuilder requestRemoveCoinToWatchList = MockMvcRequestBuilders.delete("/watchlistcoins/187coin/13")
             .contentType(MediaType.APPLICATION_JSON);
 
       MockHttpServletResponse responseRemoveCoinToWatchList = mockMvc.perform(requestRemoveCoinToWatchList).andReturn()
