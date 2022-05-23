@@ -10,8 +10,14 @@ public class WatchListCoinService {
    @Autowired
    private WatchListCoinRepository watchListCoinRepository;
 
-   public void removeCoinToWatchList(Long idWatchList) {
-      watchListCoinRepository.deleteCoinToWatchList(idWatchList);
+   public void removeCoinToWatchList(Long idWatchList, Long idWatchListCoin) {
+
+      if (watchListCoinRepository.findWatchListCoinByWatchlist(idWatchList).isEmpty()
+            || watchListCoinRepository.findWatchListCoinByCoin(idWatchListCoin).isEmpty()) {
+         throw new RuntimeException("WatchList or Coin not exist");
+      }
+
+      watchListCoinRepository.deleteCoinToWatchList(idWatchList, idWatchListCoin);
 
    }
 
