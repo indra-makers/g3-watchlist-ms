@@ -3,6 +3,8 @@ package com.co.indra.coinmarketcap.watchlist.controllers;
 import java.util.List;
 
 import javax.transaction.Transactional;
+
+import com.co.indra.coinmarketcap.watchlist.config.ErrorCodes;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -76,8 +78,7 @@ public class WatchListCoinControllerTest {
 
       ErrorResponse error = objectMapper.readValue(textResponse, ErrorResponse.class);
       Assertions.assertEquals("NOT_FOUND", error.getCode());
-      Assertions.assertEquals("The Coin in the Watchlist not exist", error.getMessage());
-
+      Assertions.assertEquals(ErrorCodes.COIN_IN_WATCHlLIST_NOT_EXIST.getMessage(),error.getMessage());
    }
 
    // Test para eliminar una moneda de una watchlist donde arroja un error cuando
@@ -102,8 +103,7 @@ public class WatchListCoinControllerTest {
 
       ErrorResponse error = objectMapper.readValue(textResponse, ErrorResponse.class);
       Assertions.assertEquals("NOT_FOUND", error.getCode());
-      Assertions.assertEquals("The Watchlist not exist", error.getMessage());
-
+      Assertions.assertEquals(ErrorCodes.WATCHlLIST_NOT_EXIST.getMessage(),error.getMessage());
    }
 
 }
