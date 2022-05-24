@@ -3,6 +3,7 @@ package com.co.indra.coinmarketcap.watchlist.exceptions;
 import com.co.indra.coinmarketcap.watchlist.config.ErrorCodes;
 
 public class NotFoundException extends RuntimeException {
+   
    private ErrorCodes bodyCode;
 
    public NotFoundException(String message) {

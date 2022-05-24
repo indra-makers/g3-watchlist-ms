@@ -1,6 +1,6 @@
 package com.co.indra.coinmarketcap.watchlist.repositories;
 
-import com.co.indra.coinmarketcap.watchlist.model.entities.WatchList;
+
 import com.co.indra.coinmarketcap.watchlist.model.entities.WatchListCoin;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
