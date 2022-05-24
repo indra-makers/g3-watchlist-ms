@@ -3,6 +3,7 @@ package com.co.indra.coinmarketcap.watchlist.model.entities;
 import java.io.Serializable;
 
 public class WatchList implements Serializable {
+
    private Long idWatchList;
    private Long idUser;
    private String watchListName;
