@@ -27,7 +27,7 @@ public class WatchListController {
       watchListService.addCoinToWatchList(watchListCoin, idWatchList);
    }
 
-   // Eliminar watchlist por medio del nombre
+   // Eliminar watchlist por medio del ID
    @DeleteMapping(Routes.DELETE_WATCHLIST_BY_ID)
    public void removeWatchlist(@PathVariable("idWatchlist") Long idWatchlist) {
       watchListService.removeWatchlist(idWatchlist);
