@@ -138,4 +138,48 @@ public class WatchListControllerTest {
       Assertions.assertEquals("Missing some parameters to add coin", error.getMessage());
    }
 
+   // Test para eliminar sin errores una WatchList que no tiene monedas
+   @Test
+   @Sql("/testdata/createRegisterOfWatchlist.sql")
+   public void removeWatchListHappyPath() throws Exception {
+
+      MockHttpServletRequestBuilder requestRemoveWatchList = MockMvcRequestBuilders
+            .delete(Routes.WATCHLIST_RESOURCE + Routes.DELETE_WATCHLIST_BY_NAME, "ETHWatchlist")
+            .contentType(MediaType.APPLICATION_JSON);
+
+      MockHttpServletResponse responseRemoveWatchList = mockMvc.perform(requestRemoveWatchList).andReturn()
+            .getResponse();
+      Assertions.assertEquals(200, responseRemoveWatchList.getStatus());
+
+      List<WatchList> ListWatchList = watchListRepository.findWatchListByName("ETHWatchlist");
+      Assertions.assertEquals(0, ListWatchList.size());
+
+   }
+
+   // Test para eliminar una WatchList donde arroja un error que no encuentra
+   // una watchlist para eliminar
+   @Test
+   @Sql("/testdata/createRegisterOfWatchlist.sql")
+
+   public void removeWatchListNotFound() throws Exception {
+
+      MockHttpServletRequestBuilder requestRemoveWatchList = MockMvcRequestBuilders
+            .delete(Routes.WATCHLIST_RESOURCE + Routes.DELETE_WATCHLIST_BY_NAME, "BTC Watchlist")
+            .contentType(MediaType.APPLICATION_JSON);
+
+      MockHttpServletResponse responseRemoveWatchList = mockMvc.perform(requestRemoveWatchList).andReturn()
+            .getResponse();
+      Assertions.assertEquals(404, responseRemoveWatchList.getStatus());
+
+      List<WatchList> ListWatchList = watchListRepository.findWatchListByName("ETHWatchlist");
+      Assertions.assertEquals(1, ListWatchList.size());
+
+      String textResponse = responseRemoveWatchList.getContentAsString();
+
+      ErrorResponse error = objectMapper.readValue(textResponse, ErrorResponse.class);
+      Assertions.assertEquals("NOT_FOUND", error.getCode());
+      Assertions.assertEquals("The Watchlist not exist", error.getMessage());
+
+   }
+
 }

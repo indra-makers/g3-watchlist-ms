@@ -1,6 +1,5 @@
 package com.co.indra.coinmarketcap.watchlist.repositories;
 
-
 import com.co.indra.coinmarketcap.watchlist.model.entities.WatchListCoin;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -41,18 +40,18 @@ public class WatchListCoinRepository {
             "SELECT id_watchlist_coin, id_watchlist, symbol FROM tbl_watchlists_coins WHERE id_watchlist=?",
             new WatchListCoinRowMapper(), id_watchlist);
    }
-   
+
    public List<WatchListCoin> findWatchListCoinByCoin(Long idWatchListCoin) {
       return template.query(
             "SELECT id_watchlist_coin, id_watchlist, symbol FROM tbl_watchlists_coins WHERE id_watchlist_coin =?",
             new WatchListCoinRowMapper(), idWatchListCoin);
    }
-   
 
    // Eliminar moneda a watchlist
    public void deleteCoinToWatchList(Long idWatchList, Long idWatchListCoin) {
 
-      template.update("DELETE FROM tbl_watchlists_coins WHERE id_watchlist = ? AND id_watchlist_coin = ?", idWatchList,idWatchListCoin);
+      template.update("DELETE FROM tbl_watchlists_coins WHERE id_watchlist = ? AND id_watchlist_coin = ?", idWatchList,
+            idWatchListCoin);
 
    }
 

@@ -1,1 +1,1 @@
-INSERT INTO tbl_watchlists_coins(id_watchlist_coin, id_watchlist, symbol) values(13,187, 'ETH');
+INSERT INTO tbl_watchlists_coins(id_watchlist_coin,id_watchlist,symbol) values(13,187,'ETH');

@@ -17,9 +17,10 @@ public class WatchListCoinController {
 
    // Eliminar los datos de envio por medio del idWatchList FK
    @DeleteMapping(Routes.DELETE_COIN_FROM_WATCHLIST)
-   public void removeCoinToWatchList(@PathVariable("idWatchList") Long idWatchList, @PathVariable("idWatchListCoin")  Long idWatchListCoin ) {
-      watchListCoinService.removeCoinToWatchList(idWatchList,idWatchListCoin);
-      
+   public void removeCoinToWatchList(@PathVariable("idWatchList") Long idWatchList,
+         @PathVariable("idWatchListCoin") Long idWatchListCoin) {
+      watchListCoinService.removeCoinToWatchList(idWatchList, idWatchListCoin);
+
    }
 
 }

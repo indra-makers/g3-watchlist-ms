@@ -12,6 +12,8 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+import javax.management.loading.PrivateClassLoader;
+
 @Service
 public class WatchListService {
 
@@ -42,4 +44,34 @@ public class WatchListService {
       }
       return watchListRepository.findWatchListByUserId(idUser);
    }
+
+   // Eliminar Watchlist
+   public void removeWatchlist(String watchListName) {
+
+      if (watchListRepository.findWatchListByName(watchListName).isEmpty()) {
+         throw new NotFoundException(ErrorCodes.WATCHlLIST_NOT_EXIST);
+      }
+
+      List<WatchList> ListWatchlist = watchListRepository.findWatchListByName(watchListName);
+
+      if (!ListWatchlist.isEmpty()) {
+         WatchList ResultWatchList = ListWatchlist.get(0);
+         List<WatchListCoin> listWatchlistCoins = watchListCoinRepository
+               .findWatchListCoinByWatchlist(ResultWatchList.getIdWatchList());
+
+         if (!listWatchlistCoins.isEmpty()) {
+            WatchListCoin ResultWatchListCoin = listWatchlistCoins.get(0);
+            boolean b = ResultWatchList.getIdWatchList() == ResultWatchListCoin.getIdWatchList();
+
+            if (b) {
+               throw new BusinessExceptions(ErrorCodes.WATCHLIST_RELATED_TO_A_CURRENCY);
+            }
+         } else {
+            watchListRepository.deleteWatchlist(watchListName);
+         }
+
+      }
+
+   }
+
 }
