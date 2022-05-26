@@ -70,6 +70,6 @@ public class WatchListService {
       if (!coinPriceAlertRepository.findCoinPriceAlertBySymbolAndIdWatchListCoin(coinPriceAlert.getSymbol(),idWatchlistCoin.intValue()).isEmpty()){
          throw new BusinessExceptions(ErrorCodes.ONLY_ONE_GOAL_PER_COIN);
       }
-      watchListCoinRepository.addCoinAlertToWatchlist(idWatchlistCoin, coinPriceAlert);
+      coinPriceAlertRepository.addCoinAlertToWatchlist(idWatchlistCoin, coinPriceAlert);
    }
 }

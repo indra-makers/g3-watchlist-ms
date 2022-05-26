@@ -36,4 +36,9 @@ public class CoinPriceAlertRepository {
                 "SELECT id_coin_price_alert, goal_price, symbol, id_watchlist_coin FROM tbl_coin_price_alerts WHERE id_watchlist_coin =? AND symbol =?",
                 new CoinPriceAlertRowMapper(), idWatchlistCoin, symbol);
     }
+
+    public void addCoinAlertToWatchlist(Long idWatchlistCoin, CoinPriceAlert coinPriceAlert){
+        template.update("INSERT INTO tbl_coin_price_alerts(goal_price, symbol, id_watchlist_coin) values(?,?,?)",
+                coinPriceAlert.getGoalPrice(), coinPriceAlert.getSymbol(), idWatchlistCoin);
+    }
 }

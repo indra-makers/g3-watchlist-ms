@@ -55,9 +55,4 @@ public class WatchListCoinRepository {
       template.update("DELETE FROM tbl_watchlists_coins WHERE id_watchlist = ? AND id_watchlist_coin = ?", idWatchList,idWatchListCoin);
    }
 
-   public void addCoinAlertToWatchlist(Long idWatchlistCoin, CoinPriceAlert coinPriceAlert){
-      template.update("INSERT INTO tbl_coin_price_alerts(goal_price, symbol, id_watchlist_coin) values(?,?,?)",
-              coinPriceAlert.getGoalPrice(), coinPriceAlert.getSymbol(), idWatchlistCoin);
-   }
-
 }
