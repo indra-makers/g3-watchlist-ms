@@ -28,9 +28,9 @@ public class WatchListController {
    }
 
    // Eliminar watchlist por medio del nombre
-   @DeleteMapping(Routes.DELETE_WATCHLIST_BY_NAME)
-   public void removeWatchlist(@PathVariable("watchListName") String watchListName) {
-      watchListService.removeWatchlist(watchListName);
+   @DeleteMapping(Routes.DELETE_WATCHLIST_BY_ID)
+   public void removeWatchlist(@PathVariable("idWatchlist") Long idWatchlist) {
+      watchListService.removeWatchlist(idWatchlist);
 
    }
 

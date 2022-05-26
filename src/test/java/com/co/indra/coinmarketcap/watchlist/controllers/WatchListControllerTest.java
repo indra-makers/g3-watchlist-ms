@@ -144,14 +144,14 @@ public class WatchListControllerTest {
    public void removeWatchListHappyPath() throws Exception {
 
       MockHttpServletRequestBuilder requestRemoveWatchList = MockMvcRequestBuilders
-            .delete(Routes.WATCHLIST_RESOURCE + Routes.DELETE_WATCHLIST_BY_NAME, "ETHWatchlist")
+            .delete(Routes.WATCHLIST_RESOURCE + Routes.DELETE_WATCHLIST_BY_ID, 187)
             .contentType(MediaType.APPLICATION_JSON);
 
       MockHttpServletResponse responseRemoveWatchList = mockMvc.perform(requestRemoveWatchList).andReturn()
             .getResponse();
       Assertions.assertEquals(200, responseRemoveWatchList.getStatus());
 
-      List<WatchList> ListWatchList = watchListRepository.findWatchListByName("ETHWatchlist");
+      List<WatchList> ListWatchList = watchListRepository.findWatchListById((long) 187);
       Assertions.assertEquals(0, ListWatchList.size());
 
    }
@@ -164,14 +164,14 @@ public class WatchListControllerTest {
    public void removeWatchListNotFound() throws Exception {
 
       MockHttpServletRequestBuilder requestRemoveWatchList = MockMvcRequestBuilders
-            .delete(Routes.WATCHLIST_RESOURCE + Routes.DELETE_WATCHLIST_BY_NAME, "BTC Watchlist")
+            .delete(Routes.WATCHLIST_RESOURCE + Routes.DELETE_WATCHLIST_BY_ID, 244)
             .contentType(MediaType.APPLICATION_JSON);
 
       MockHttpServletResponse responseRemoveWatchList = mockMvc.perform(requestRemoveWatchList).andReturn()
             .getResponse();
       Assertions.assertEquals(404, responseRemoveWatchList.getStatus());
 
-      List<WatchList> ListWatchList = watchListRepository.findWatchListByName("ETHWatchlist");
+      List<WatchList> ListWatchList = watchListRepository.findWatchListById((long) 187);
       Assertions.assertEquals(1, ListWatchList.size());
 
       String textResponse = responseRemoveWatchList.getContentAsString();
@@ -179,6 +179,31 @@ public class WatchListControllerTest {
       ErrorResponse error = objectMapper.readValue(textResponse, ErrorResponse.class);
       Assertions.assertEquals("NOT_FOUND", error.getCode());
       Assertions.assertEquals("The Watchlist not exist", error.getMessage());
+
+   }
+
+   // Test para eliminar cuando tiene monedas asociadas
+   @Test
+   @Sql("/testdata/createRegisterOfWatchlist.sql")
+   @Sql("/testdata/createCoinToWatchlist.sql")
+   public void removeWatchListWithCoin() throws Exception {
+
+      MockHttpServletRequestBuilder requestRemoveWatchList = MockMvcRequestBuilders
+            .delete(Routes.WATCHLIST_RESOURCE + Routes.DELETE_WATCHLIST_BY_ID, 187)
+            .contentType(MediaType.APPLICATION_JSON);
+
+      MockHttpServletResponse responseRemoveWatchList = mockMvc.perform(requestRemoveWatchList).andReturn()
+            .getResponse();
+      Assertions.assertEquals(412, responseRemoveWatchList.getStatus());
+
+      List<WatchList> ListWatchList = watchListRepository.findWatchListById((long) 187);
+      Assertions.assertEquals(1, ListWatchList.size());
+
+      String textResponse = responseRemoveWatchList.getContentAsString();
+
+      ErrorResponse error = objectMapper.readValue(textResponse, ErrorResponse.class);
+      Assertions.assertEquals("008", error.getCode());
+      Assertions.assertEquals("This watchlist contains coins currently", error.getMessage());
 
    }
 

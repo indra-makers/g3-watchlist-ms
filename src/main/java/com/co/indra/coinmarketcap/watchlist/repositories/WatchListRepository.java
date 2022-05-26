@@ -53,9 +53,14 @@ public class WatchListRepository {
             new WatchListRowMapper(), id_user);
    }
 
+   
+   
    // Eliminar watchlist
-   public void deleteWatchlist(String watchListName) {
-      template.update("DELETE FROM tbl_watchlists WHERE watchlist_name = ? ", watchListName);
+   public void deleteWatchlist(Long idWatchList) {
+      template.update("DELETE FROM tbl_watchlists WHERE id_watchlist = ? ", idWatchList);
    }
+   
+   
+   
 
 }

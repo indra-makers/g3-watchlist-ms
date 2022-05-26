@@ -45,33 +45,21 @@ public class WatchListService {
       return watchListRepository.findWatchListByUserId(idUser);
    }
 
+   
    // Eliminar Watchlist
-   public void removeWatchlist(String watchListName) {
+   public void removeWatchlist(Long idWatchList) {
 
-      if (watchListRepository.findWatchListByName(watchListName).isEmpty()) {
+      if (watchListRepository.findWatchListById(idWatchList).isEmpty()) {
          throw new NotFoundException(ErrorCodes.WATCHlLIST_NOT_EXIST);
       }
-
-      List<WatchList> ListWatchlist = watchListRepository.findWatchListByName(watchListName);
-
-      if (!ListWatchlist.isEmpty()) {
-         WatchList ResultWatchList = ListWatchlist.get(0);
-         List<WatchListCoin> listWatchlistCoins = watchListCoinRepository
-               .findWatchListCoinByWatchlist(ResultWatchList.getIdWatchList());
-
-         if (!listWatchlistCoins.isEmpty()) {
-            WatchListCoin ResultWatchListCoin = listWatchlistCoins.get(0);
-            boolean b = ResultWatchList.getIdWatchList() == ResultWatchListCoin.getIdWatchList();
-
-            if (b) {
-               throw new BusinessExceptions(ErrorCodes.WATCHLIST_RELATED_TO_A_CURRENCY);
-            }
-         } else {
-            watchListRepository.deleteWatchlist(watchListName);
-         }
-
+      if(watchListCoinRepository.findWatchListCoinByWatchlist(idWatchList).isEmpty()) {
+         watchListRepository.deleteWatchlist(idWatchList);
+      }else {
+         throw new BusinessExceptions(ErrorCodes.WATCHLIST_RELATED_TO_A_CURRENCY);
       }
-
+      
    }
+   
+
 
 }
