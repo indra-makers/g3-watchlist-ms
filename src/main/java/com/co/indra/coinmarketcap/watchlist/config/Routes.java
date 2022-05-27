@@ -8,5 +8,6 @@ public class Routes {
    public static final String DELETE_COIN_FROM_WATCHLIST = "/{idWatchList}/coins/{idWatchListCoin}";
    public static final String WATCHLIST_COIN_RESOURCE = "/watchlistcoins";
    public static final String USERS_RESOURCE = "/users";
+   public static final String DELETE_WATCHLIST_BY_ID = "/{idWatchlist}";
 
 }

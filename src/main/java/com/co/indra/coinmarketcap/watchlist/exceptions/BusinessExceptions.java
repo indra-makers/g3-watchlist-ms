@@ -3,8 +3,7 @@ package com.co.indra.coinmarketcap.watchlist.exceptions;
 import com.co.indra.coinmarketcap.watchlist.config.ErrorCodes;
 
 public class BusinessExceptions extends RuntimeException {
-   
-   
+
    private ErrorCodes bodyCode;
 
    public BusinessExceptions(String message) {

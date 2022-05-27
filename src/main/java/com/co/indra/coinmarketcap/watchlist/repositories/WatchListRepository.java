@@ -52,4 +52,15 @@ public class WatchListRepository {
             "SELECT id_watchlist, id_user, watchlist_name, watchlist_description, is_private FROM tbl_watchlists WHERE id_user=?",
             new WatchListRowMapper(), id_user);
    }
+
+   
+   
+   // Eliminar watchlist
+   public void deleteWatchlist(Long idWatchList) {
+      template.update("DELETE FROM tbl_watchlists WHERE id_watchlist = ? ", idWatchList);
+   }
+   
+   
+   
+
 }
