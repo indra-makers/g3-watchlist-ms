@@ -184,7 +184,7 @@ public class WatchListControllerTest {
 
       ErrorResponse error = objectMapper.readValue(textResponse, ErrorResponse.class);
       Assertions.assertEquals("NOT_FOUND", error.getCode());
-      Assertions.assertEquals("The Watchlist not exist", error.getMessage());
+      Assertions.assertEquals(ErrorCodes.WATCHlLIST_NOT_EXIST.getMessage(), error.getMessage());
 
    }
 
@@ -209,7 +209,7 @@ public class WatchListControllerTest {
 
       ErrorResponse error = objectMapper.readValue(textResponse, ErrorResponse.class);
       Assertions.assertEquals("008", error.getCode());
-      Assertions.assertEquals("This watchlist contains coins currently", error.getMessage());
+      Assertions.assertEquals(ErrorCodes.WATCHLIST_RELATED_TO_A_CURRENCY.getMessage(), error.getMessage());
 
    }
 
