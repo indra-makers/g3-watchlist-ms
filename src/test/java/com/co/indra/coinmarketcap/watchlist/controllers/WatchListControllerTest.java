@@ -1,9 +1,12 @@
 package com.co.indra.coinmarketcap.watchlist.controllers;
 
+import com.co.indra.coinmarketcap.watchlist.config.ErrorCodes;
 import com.co.indra.coinmarketcap.watchlist.config.Routes;
+import com.co.indra.coinmarketcap.watchlist.model.entities.CoinPriceAlert;
 import com.co.indra.coinmarketcap.watchlist.model.entities.WatchList;
 import com.co.indra.coinmarketcap.watchlist.model.entities.WatchListCoin;
 import com.co.indra.coinmarketcap.watchlist.model.responses.ErrorResponse;
+import com.co.indra.coinmarketcap.watchlist.repositories.CoinPriceAlertRepository;
 import com.co.indra.coinmarketcap.watchlist.repositories.WatchListCoinRepository;
 import com.co.indra.coinmarketcap.watchlist.repositories.WatchListRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -32,6 +35,9 @@ public class WatchListControllerTest {
 
    @Autowired
    WatchListCoinRepository watchListCoinRepository;
+
+   @Autowired
+   CoinPriceAlertRepository coinPriceAlertRepository;
 
    @Autowired
    private MockMvc mockMvc;
@@ -71,8 +77,8 @@ public class WatchListControllerTest {
       String textResponse = response.getContentAsString();
       ErrorResponse error = objectMapper.readValue(textResponse, ErrorResponse.class);
 
-      Assertions.assertEquals("003", error.getCode());
-      Assertions.assertEquals("Missing some parameters to add watchlist", error.getMessage());
+      Assertions.assertEquals(ErrorCodes.MISSING_PARAMETERS.getCode(), error.getCode());
+      Assertions.assertEquals(ErrorCodes.MISSING_PARAMETERS.getMessage(), error.getMessage());
 
    }
 
@@ -117,8 +123,8 @@ public class WatchListControllerTest {
       String textResponse = response.getContentAsString();
       ErrorResponse error = objectMapper.readValue(textResponse, ErrorResponse.class);
 
-      Assertions.assertEquals("002", error.getCode());
-      Assertions.assertEquals("The coin symbol is already registered on the watchlist", error.getMessage());
+      Assertions.assertEquals(ErrorCodes.SYMBOL_EXISTS_IN_WATCHLIST.getCode(), error.getCode());
+      Assertions.assertEquals(ErrorCodes.SYMBOL_EXISTS_IN_WATCHLIST.getMessage(), error.getMessage());
    }
 
    @Test
@@ -134,8 +140,8 @@ public class WatchListControllerTest {
       String textResponse = response.getContentAsString();
       ErrorResponse error = objectMapper.readValue(textResponse, ErrorResponse.class);
 
-      Assertions.assertEquals("004", error.getCode());
-      Assertions.assertEquals("Missing some parameters to add coin", error.getMessage());
+      Assertions.assertEquals(ErrorCodes.MISSING_COIN_PARAMETERS.getCode(), error.getCode());
+      Assertions.assertEquals(ErrorCodes.MISSING_COIN_PARAMETERS.getMessage(), error.getMessage());
    }
 
    // Test para eliminar sin errores una WatchList que no tiene monedas
@@ -178,7 +184,7 @@ public class WatchListControllerTest {
 
       ErrorResponse error = objectMapper.readValue(textResponse, ErrorResponse.class);
       Assertions.assertEquals("NOT_FOUND", error.getCode());
-      Assertions.assertEquals("The Watchlist not exist", error.getMessage());
+      Assertions.assertEquals(ErrorCodes.WATCHlLIST_NOT_EXIST.getMessage(), error.getMessage());
 
    }
 
@@ -203,8 +209,59 @@ public class WatchListControllerTest {
 
       ErrorResponse error = objectMapper.readValue(textResponse, ErrorResponse.class);
       Assertions.assertEquals("008", error.getCode());
-      Assertions.assertEquals("This watchlist contains coins currently", error.getMessage());
+      Assertions.assertEquals(ErrorCodes.WATCHLIST_RELATED_TO_A_CURRENCY.getMessage(), error.getMessage());
 
    }
 
+   @Test
+   @Sql("/testdata/addCoinToWatchListSameCoin.sql")
+   public void addCoinAlertToWatchlist() throws Exception {
+      MockHttpServletRequestBuilder request = MockMvcRequestBuilders
+              .post(Routes.WATCHLIST_RESOURCE + Routes.ADD_COIN_ALERT_TO_WATCHLIST, 999)
+              .content("{\n" +
+                      "    \"symbol\": \"ZZZ\",\n" +
+                      "    \"goalPrice\": 50000\n" +
+                      "}").contentType(MediaType.APPLICATION_JSON);
+
+      MockHttpServletResponse response = mockMvc.perform(request).andReturn().getResponse();
+      Assertions.assertEquals(200, response.getStatus());
+
+      List<CoinPriceAlert> coinPriceAlerts = coinPriceAlertRepository.findCoinPriceAlertBySymbolAndIdWatchListCoin("ZZZ", 999);
+      Assertions.assertEquals(1, coinPriceAlerts.size());
+
+      CoinPriceAlert coinPriceAlert = coinPriceAlerts.get(0);
+
+      Assertions.assertEquals(50000, coinPriceAlert.getGoalPrice());
+   }
+   @Test
+   public void addCoinAlertToNoWatchlist() throws Exception {
+      MockHttpServletRequestBuilder request = MockMvcRequestBuilders
+              .post(Routes.WATCHLIST_RESOURCE + Routes.ADD_COIN_ALERT_TO_WATCHLIST, 999)
+              .content("{\n" +
+                      "    \"symbol\": \"ZZZ\",\n" +
+                      "    \"goalPrice\": 50000\n" +
+                      "}").contentType(MediaType.APPLICATION_JSON);
+
+      MockHttpServletResponse response = mockMvc.perform(request).andReturn().getResponse();
+      Assertions.assertEquals(404, response.getStatus());
+   }
+   @Test
+   @Sql("/testdata/addSameCoinAlertToWatchlist.sql")
+   public void addSameCoinAlertToWatchlist() throws Exception {
+      MockHttpServletRequestBuilder request = MockMvcRequestBuilders
+              .post(Routes.WATCHLIST_RESOURCE + Routes.ADD_COIN_ALERT_TO_WATCHLIST, 999)
+              .content("{\n" +
+                      "    \"symbol\": \"ZZZ\",\n" +
+                      "    \"goalPrice\": 50000\n" +
+                      "}").contentType(MediaType.APPLICATION_JSON);
+
+      MockHttpServletResponse response = mockMvc.perform(request).andReturn().getResponse();
+      Assertions.assertEquals(412, response.getStatus());
+
+      String textResponse = response.getContentAsString();
+      ErrorResponse error = objectMapper.readValue(textResponse, ErrorResponse.class);
+
+      Assertions.assertEquals(ErrorCodes.ONLY_ONE_GOAL_PER_COIN.getCode(), error.getCode());
+      Assertions.assertEquals(ErrorCodes.ONLY_ONE_GOAL_PER_COIN.getMessage(), error.getMessage());
+   }
 }

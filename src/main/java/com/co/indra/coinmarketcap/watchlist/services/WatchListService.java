@@ -3,8 +3,10 @@ package com.co.indra.coinmarketcap.watchlist.services;
 import com.co.indra.coinmarketcap.watchlist.config.ErrorCodes;
 import com.co.indra.coinmarketcap.watchlist.exceptions.BusinessExceptions;
 import com.co.indra.coinmarketcap.watchlist.exceptions.NotFoundException;
+import com.co.indra.coinmarketcap.watchlist.model.entities.CoinPriceAlert;
 import com.co.indra.coinmarketcap.watchlist.model.entities.WatchList;
 import com.co.indra.coinmarketcap.watchlist.model.entities.WatchListCoin;
+import com.co.indra.coinmarketcap.watchlist.repositories.CoinPriceAlertRepository;
 import com.co.indra.coinmarketcap.watchlist.repositories.WatchListCoinRepository;
 import com.co.indra.coinmarketcap.watchlist.repositories.WatchListRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +23,8 @@ public class WatchListService {
    private WatchListRepository watchListRepository;
    @Autowired
    private WatchListCoinRepository watchListCoinRepository;
+   @Autowired
+   private CoinPriceAlertRepository coinPriceAlertRepository;
 
    public void createWatchList(WatchList watchList) {
       if (watchList.getIdUser() == null) {
@@ -45,7 +49,6 @@ public class WatchListService {
       return watchListRepository.findWatchListByUserId(idUser);
    }
 
-   
    // Eliminar Watchlist
    public void removeWatchlist(Long idWatchList) {
 
@@ -60,6 +63,13 @@ public class WatchListService {
       
    }
    
-
-
+   public void addCoinAlertToWatchlist(Long idWatchlistCoin, CoinPriceAlert coinPriceAlert){
+      if (watchListCoinRepository.findWatchListCoinByCoin(idWatchlistCoin).isEmpty()) {
+         throw new NotFoundException(ErrorCodes.WATCHlLIST_NOT_EXIST);
+      }
+      if (!coinPriceAlertRepository.findCoinPriceAlertBySymbolAndIdWatchListCoin(coinPriceAlert.getSymbol(),idWatchlistCoin.intValue()).isEmpty()){
+         throw new BusinessExceptions(ErrorCodes.ONLY_ONE_GOAL_PER_COIN);
+      }
+      coinPriceAlertRepository.addCoinAlertToWatchlist(idWatchlistCoin, coinPriceAlert);
+   }
 }

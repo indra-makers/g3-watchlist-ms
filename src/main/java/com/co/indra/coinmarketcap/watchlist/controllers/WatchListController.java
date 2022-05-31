@@ -1,5 +1,6 @@
 package com.co.indra.coinmarketcap.watchlist.controllers;
 
+import com.co.indra.coinmarketcap.watchlist.model.entities.CoinPriceAlert;
 import com.co.indra.coinmarketcap.watchlist.model.entities.WatchList;
 import com.co.indra.coinmarketcap.watchlist.model.entities.WatchListCoin;
 import com.co.indra.coinmarketcap.watchlist.services.WatchListService;
@@ -32,6 +33,11 @@ public class WatchListController {
    public void removeWatchlist(@PathVariable("idWatchlist") Long idWatchlist) {
       watchListService.removeWatchlist(idWatchlist);
 
+   }
+
+   @PostMapping(Routes.ADD_COIN_ALERT_TO_WATCHLIST)
+   public void addCoinAlertToWatchList(@PathVariable("idWatchlistCoin") Long idWatchlist, @RequestBody CoinPriceAlert coinPriceAlert){
+      watchListService.addCoinAlertToWatchlist(idWatchlist, coinPriceAlert);
    }
 
 }
