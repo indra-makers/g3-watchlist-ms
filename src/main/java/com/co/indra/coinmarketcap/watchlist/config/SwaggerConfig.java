@@ -10,8 +10,8 @@ import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spring.web.plugins.Docket;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
-//Solamente habilitar cuando se suba a gitHub para que pueda funcionar el Swagger
-//@EnableWebMvc 
+
+
 @Configuration
 @EnableSwagger2
 public class SwaggerConfig {
