@@ -3,6 +3,8 @@ package com.co.indra.coinmarketcap.watchlist.services;
 import com.co.indra.coinmarketcap.watchlist.config.ErrorCodes;
 import com.co.indra.coinmarketcap.watchlist.exceptions.BusinessExceptions;
 import com.co.indra.coinmarketcap.watchlist.exceptions.NotFoundException;
+import com.co.indra.coinmarketcap.watchlist.externalsAPI.users.model.UserModel;
+import com.co.indra.coinmarketcap.watchlist.externalsAPI.users.repositoryRest.UserRest;
 import com.co.indra.coinmarketcap.watchlist.model.entities.CoinPriceAlert;
 import com.co.indra.coinmarketcap.watchlist.model.entities.WatchList;
 import com.co.indra.coinmarketcap.watchlist.model.entities.WatchListCoin;
@@ -25,10 +27,17 @@ public class WatchListService {
    private WatchListCoinRepository watchListCoinRepository;
    @Autowired
    private CoinPriceAlertRepository coinPriceAlertRepository;
+   @Autowired
+   private UserRest userRest;
 
    public void createWatchList(WatchList watchList) {
       if (watchList.getIdUser() == null) {
          throw new BusinessExceptions(ErrorCodes.MISSING_PARAMETERS);
+      }
+      try{
+         UserModel userModel = userRest.getUserById(watchList.getIdUser().intValue());
+      } catch (Exception e) {
+         throw new NotFoundException(ErrorCodes.USER_DOES_NOT_EXIST);
       }
       watchListRepository.createWatchlist(watchList);
    }
