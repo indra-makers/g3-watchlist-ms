@@ -9,7 +9,7 @@ public class UserModel {
     public UserModel() {
     }
 
-    public UserModel(int userId, String name, String mail, Long idMembership, String code, String message) {
+    public UserModel(int userId, String name, String mail, Long idMembership) {
         this.userId = userId;
         this.name = name;
         this.mail = mail;

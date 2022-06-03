@@ -1,5 +1,6 @@
 package com.co.indra.coinmarketcap.watchlist.exceptions;
 
+import com.co.indra.coinmarketcap.watchlist.config.ErrorCodes;
 import com.co.indra.coinmarketcap.watchlist.model.responses.ErrorResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -7,6 +8,7 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.client.HttpClientErrorException;
 
 @ControllerAdvice
 public class CustomExceptionHandler {
@@ -30,6 +32,13 @@ public class CustomExceptionHandler {
    @ExceptionHandler(MethodArgumentNotValidException.class)
    public ErrorResponse handleNotFoundException(MethodArgumentNotValidException exception) {
       return new ErrorResponse("BAD_REQUEST", exception.getMessage());
+   }
+
+   @ResponseStatus(HttpStatus.NOT_FOUND)
+   @ResponseBody
+   @ExceptionHandler(HttpClientErrorException.NotFound.class)
+   public ErrorResponse handleNotFoundExceptionExternalApi(HttpClientErrorException.NotFound exception) {
+      return new ErrorResponse("ERROR", ErrorCodes.USER_DOES_NOT_EXIST.getMessage());
    }
 
    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)

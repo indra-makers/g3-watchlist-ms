@@ -16,7 +16,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-import javax.management.loading.PrivateClassLoader;
 
 @Service
 public class WatchListService {
@@ -34,11 +33,7 @@ public class WatchListService {
       if (watchList.getIdUser() == null) {
          throw new BusinessExceptions(ErrorCodes.MISSING_PARAMETERS);
       }
-      try{
-         UserModel userModel = userRest.getUserById(watchList.getIdUser().intValue());
-      } catch (Exception e) {
-         throw new NotFoundException(ErrorCodes.USER_DOES_NOT_EXIST);
-      }
+      UserModel userModel = userRest.getUserById(watchList.getIdUser().intValue());
       watchListRepository.createWatchlist(watchList);
    }
 
