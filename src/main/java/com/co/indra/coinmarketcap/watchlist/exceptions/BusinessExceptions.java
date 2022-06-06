@@ -9,6 +9,10 @@ public class BusinessExceptions extends RuntimeException {
    public BusinessExceptions(String message) {
       super(message);
    }
+   
+   public BusinessExceptions() {
+   	
+   }
 
    public BusinessExceptions(ErrorCodes bodycode) {
       super(bodycode.getMessage());

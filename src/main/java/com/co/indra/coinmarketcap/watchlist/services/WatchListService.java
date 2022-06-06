@@ -9,67 +9,81 @@ import com.co.indra.coinmarketcap.watchlist.model.entities.WatchListCoin;
 import com.co.indra.coinmarketcap.watchlist.repositories.CoinPriceAlertRepository;
 import com.co.indra.coinmarketcap.watchlist.repositories.WatchListCoinRepository;
 import com.co.indra.coinmarketcap.watchlist.repositories.WatchListRepository;
+import com.co.indra.coinmarketcap.watchlist.userApi.models.UserApi;
+import com.co.indra.coinmarketcap.watchlist.userApi.service.UserApiService;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-import javax.management.loading.PrivateClassLoader;
-
 @Service
 public class WatchListService {
+	@Autowired
+	private WatchListRepository watchListRepository;
+	@Autowired
+	private WatchListCoinRepository watchListCoinRepository;
+	@Autowired
+	private CoinPriceAlertRepository coinPriceAlertRepository;
 
-   @Autowired
-   private WatchListRepository watchListRepository;
-   @Autowired
-   private WatchListCoinRepository watchListCoinRepository;
-   @Autowired
-   private CoinPriceAlertRepository coinPriceAlertRepository;
+	@Autowired
+	private UserApiService users;
 
-   public void createWatchList(WatchList watchList) {
-      if (watchList.getIdUser() == null) {
-         throw new BusinessExceptions(ErrorCodes.MISSING_PARAMETERS);
-      }
-      watchListRepository.createWatchlist(watchList);
-   }
+	public void createWatchList(WatchList watchList) {
+		UserApi userApi;
+		userApi = users.extractUser(watchList.getIdUser());
+		if (watchList.getIdUser() == userApi.getUserId()) {
+			watchListRepository.createWatchlist(watchList);
+		} else {
+			throw new NotFoundException(ErrorCodes.USER_DOES_NOT_EXIST.getMessage());
+		}
+	}
 
-   public void addCoinToWatchList(WatchListCoin watchListCoin, Long idWatchList) {
-      if (!watchListCoinRepository.findWatchListCoinBySymbol(watchListCoin.getSymbol()).isEmpty()) {
-         throw new BusinessExceptions(ErrorCodes.SYMBOL_EXISTS_IN_WATCHLIST);
-      } else if (watchListCoin.getSymbol() == null) {
-         throw new BusinessExceptions(ErrorCodes.MISSING_COIN_PARAMETERS);
-      }
-      watchListCoinRepository.addCoinToWatchList(watchListCoin, idWatchList);
-   }
+	public UserApi getUser(Long idUser){
 
-   public List<WatchList> getWatchlist(Long idUser) {
-      if (watchListRepository.findWatchListByUserId(idUser).isEmpty()) {
-         throw new NotFoundException(ErrorCodes.USER_DOES_NOT_EXIST);
-      }
-      return watchListRepository.findWatchListByUserId(idUser);
-   }
+		return users.extractUser(idUser);
 
-   // Eliminar Watchlist
-   public void removeWatchlist(Long idWatchList) {
+	}
 
-      if (watchListRepository.findWatchListById(idWatchList).isEmpty()) {
-         throw new NotFoundException(ErrorCodes.WATCHlLIST_NOT_EXIST);
-      }
-      if(watchListCoinRepository.findWatchListCoinByWatchlist(idWatchList).isEmpty()) {
-         watchListRepository.deleteWatchlist(idWatchList);
-      }else {
-         throw new BusinessExceptions(ErrorCodes.WATCHLIST_RELATED_TO_A_CURRENCY);
-      }
-      
-   }
-   
-   public void addCoinAlertToWatchlist(Long idWatchlistCoin, CoinPriceAlert coinPriceAlert){
-      if (watchListCoinRepository.findWatchListCoinByCoin(idWatchlistCoin).isEmpty()) {
-         throw new NotFoundException(ErrorCodes.WATCHlLIST_NOT_EXIST);
-      }
-      if (!coinPriceAlertRepository.findCoinPriceAlertBySymbolAndIdWatchListCoin(coinPriceAlert.getSymbol(),idWatchlistCoin.intValue()).isEmpty()){
-         throw new BusinessExceptions(ErrorCodes.ONLY_ONE_GOAL_PER_COIN);
-      }
-      coinPriceAlertRepository.addCoinAlertToWatchlist(idWatchlistCoin, coinPriceAlert);
-   }
+	public void addCoinToWatchList(WatchListCoin watchListCoin, Long idWatchList) {
+		if (!watchListCoinRepository.findWatchListCoinBySymbol(watchListCoin.getSymbol()).isEmpty()) {
+			throw new BusinessExceptions(ErrorCodes.SYMBOL_EXISTS_IN_WATCHLIST);
+		} else if (watchListCoin.getSymbol() == null) {
+			throw new BusinessExceptions(ErrorCodes.MISSING_COIN_PARAMETERS);
+		}
+		watchListCoinRepository.addCoinToWatchList(watchListCoin, idWatchList);
+	}
+
+	public List<WatchList> getWatchlist(Long idUser) {
+		if (watchListRepository.findWatchListByUserId(idUser).isEmpty()) {
+			throw new NotFoundException(ErrorCodes.USER_DOES_NOT_EXIST);
+		}
+		return watchListRepository.findWatchListByUserId(idUser);
+	}
+
+	// Eliminar Watchlist
+	public void removeWatchlist(Long idWatchList) {
+
+		if (watchListRepository.findWatchListById(idWatchList).isEmpty()) {
+			throw new NotFoundException(ErrorCodes.WATCHlLIST_NOT_EXIST);
+		}
+		if (watchListCoinRepository.findWatchListCoinByWatchlist(idWatchList).isEmpty()) {
+			watchListRepository.deleteWatchlist(idWatchList);
+		} else {
+			throw new BusinessExceptions(ErrorCodes.WATCHLIST_RELATED_TO_A_CURRENCY);
+		}
+
+	}
+
+	public void addCoinAlertToWatchlist(Long idWatchlistCoin, CoinPriceAlert coinPriceAlert) {
+		if (watchListCoinRepository.findWatchListCoinByCoin(idWatchlistCoin).isEmpty()) {
+			throw new NotFoundException(ErrorCodes.WATCHlLIST_NOT_EXIST);
+		}
+		if (!coinPriceAlertRepository
+				.findCoinPriceAlertBySymbolAndIdWatchListCoin(coinPriceAlert.getSymbol(), idWatchlistCoin.intValue())
+				.isEmpty()) {
+			throw new BusinessExceptions(ErrorCodes.ONLY_ONE_GOAL_PER_COIN);
+		}
+		coinPriceAlertRepository.addCoinAlertToWatchlist(idWatchlistCoin, coinPriceAlert);
+	}
 }
