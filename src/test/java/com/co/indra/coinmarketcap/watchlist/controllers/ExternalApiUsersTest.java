@@ -69,7 +69,7 @@ public class ExternalApiUsersTest {
 
         MockHttpServletRequestBuilder request = MockMvcRequestBuilders.post(Routes.WATCHLIST_RESOURCE).
                 content("{\n" +
-                        "    \"idUser\": 5,\n" +
+                        "    \"idUser\": 202,\n" +
                         "    \"watchListName\": \"asasd\",\n" +
                         "    \"watchListDescription\": \"descripcion aki\",\n" +
                         "    \"isPrivate\": \"false\"\n" +

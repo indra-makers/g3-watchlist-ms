@@ -1,6 +1,8 @@
 package com.co.indra.coinmarketcap.watchlist.externalsAPI.users.model;
 
-public class UserModel {
+import java.io.Serializable;
+
+public class UserModel implements Serializable{
     private int userId;
     private String name;
     private String mail;
