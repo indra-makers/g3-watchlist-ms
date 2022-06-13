@@ -22,7 +22,7 @@ public class UserRest {
     @Value("${api.users.url}")
     private String apiUrl;
 
-    @Cacheable(value = "getUser", cacheManager = "expireOneMinute", key = "#id", unless = "#result == null")
+    @Cacheable(value = "getUser", cacheManager = "expire30Mins", key = "#id", unless = "#result == null")
     public UserModel getUserById(int id) {
         String url = apiUrl+id;
         ResponseEntity <UserModel> response = restTemplate.getForEntity(url, UserModel.class);
