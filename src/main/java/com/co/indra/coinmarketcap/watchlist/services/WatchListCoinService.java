@@ -26,5 +26,4 @@ public class WatchListCoinService {
       watchListCoinRepository.deleteCoinToWatchList(idWatchList, idWatchListCoin);
 
    }
-
 }
