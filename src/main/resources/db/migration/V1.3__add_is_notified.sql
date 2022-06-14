@@ -1,0 +1,1 @@
+ALTER TABLE tbl_coin_price_alerts ADD COLUMN isNotified boolean DEFAULT false;

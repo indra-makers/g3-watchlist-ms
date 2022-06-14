@@ -8,15 +8,17 @@ public class CoinPriceAlert implements Serializable {
     private String symbol;
     private double goalPrice;
     private int idWatchlistCoin;
+    private boolean isNotified;
 
-    public CoinPriceAlert(int idCoinPriceAlert, String symbol, double goalPrice, int idWatchlist) {
+    public CoinPriceAlert() {
+    }
+
+    public CoinPriceAlert(int idCoinPriceAlert, String symbol, double goalPrice, int idWatchlistCoin, boolean isNotified) {
         this.idCoinPriceAlert = idCoinPriceAlert;
         this.symbol = symbol;
         this.goalPrice = goalPrice;
-        this.idWatchlistCoin = idWatchlist;
-    }
-
-    public CoinPriceAlert() {
+        this.idWatchlistCoin = idWatchlistCoin;
+        this.isNotified = isNotified;
     }
 
     public int getIdCoinPriceAlert() {
@@ -43,11 +45,19 @@ public class CoinPriceAlert implements Serializable {
         this.goalPrice = goalPrice;
     }
 
-    public int getIdWatchlist() {
+    public int getIdWatchlistCoin() {
         return idWatchlistCoin;
     }
 
-    public void setIdWatchlist(int idWatchlist) {
-        this.idWatchlistCoin = idWatchlist;
+    public void setIdWatchlistCoin(int idWatchlistCoin) {
+        this.idWatchlistCoin = idWatchlistCoin;
+    }
+
+    public boolean isNotified() {
+        return isNotified;
+    }
+
+    public void setNotified(boolean notified) {
+        isNotified = notified;
     }
 }

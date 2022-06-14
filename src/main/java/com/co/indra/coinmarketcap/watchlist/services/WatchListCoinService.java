@@ -14,17 +14,12 @@ public class WatchListCoinService {
    private WatchListCoinRepository watchListCoinRepository;
 
    public void removeCoinToWatchList(Long idWatchList, Long idWatchListCoin) {
-
       if (watchListCoinRepository.findWatchListCoinByWatchlist(idWatchList).isEmpty()) {
          throw new NotFoundException(ErrorCodes.WATCHlLIST_NOT_EXIST);
       }
-
       if (watchListCoinRepository.findWatchListCoinByCoin(idWatchListCoin).isEmpty()) {
          throw new NotFoundException(ErrorCodes.COIN_IN_WATCHlLIST_NOT_EXIST);
       }
-
       watchListCoinRepository.deleteCoinToWatchList(idWatchList, idWatchListCoin);
-
    }
-
 }
