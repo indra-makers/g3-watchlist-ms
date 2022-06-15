@@ -8,6 +8,7 @@ public class WatchListCoin implements Serializable {
    private Long idWatchList;
    private String symbol;
 
+
    public WatchListCoin() {
    }
 
