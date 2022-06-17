@@ -5,6 +5,7 @@ import java.io.Serializable;
 public class CoinPriceAlert implements Serializable {
 
     private int idCoinPriceAlert;
+    private int idUser;
     private String symbol;
     private double goalPrice;
     private int idWatchlistCoin;
@@ -13,8 +14,9 @@ public class CoinPriceAlert implements Serializable {
     public CoinPriceAlert() {
     }
 
-    public CoinPriceAlert(int idCoinPriceAlert, String symbol, double goalPrice, int idWatchlistCoin, boolean isNotified) {
+    public CoinPriceAlert(int idCoinPriceAlert, int idUser, String symbol, double goalPrice, int idWatchlistCoin, boolean isNotified) {
         this.idCoinPriceAlert = idCoinPriceAlert;
+        this.idUser = idUser;
         this.symbol = symbol;
         this.goalPrice = goalPrice;
         this.idWatchlistCoin = idWatchlistCoin;
@@ -27,6 +29,14 @@ public class CoinPriceAlert implements Serializable {
 
     public void setIdCoinPriceAlert(int idCoinPriceAlert) {
         this.idCoinPriceAlert = idCoinPriceAlert;
+    }
+
+    public int getIdUser() {
+        return idUser;
+    }
+
+    public void setIdUser(int idUser) {
+        this.idUser = idUser;
     }
 
     public String getSymbol() {

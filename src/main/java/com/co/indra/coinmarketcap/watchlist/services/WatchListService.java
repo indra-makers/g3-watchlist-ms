@@ -68,6 +68,7 @@ public class WatchListService {
    }
    
    public void addCoinAlertToWatchlist(Long idWatchlistCoin, CoinPriceAlert coinPriceAlert){
+      UserModel userModel = userRest.getUserById(coinPriceAlert.getIdUser());
       if (watchListCoinRepository.findWatchListCoinByCoin(idWatchlistCoin).isEmpty()) {
          throw new NotFoundException(ErrorCodes.WATCHlLIST_NOT_EXIST);
       }

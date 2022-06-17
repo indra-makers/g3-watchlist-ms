@@ -5,13 +5,15 @@ import java.io.Serializable;
 public class Notification implements Serializable {
     private String body;
     private String subject;
+    private int idUser;
 
     public Notification() {
     }
 
-    public Notification(String body, String subject) {
+    public Notification(String body, String subject, int idUser) {
         this.body = body;
         this.subject = subject;
+        this.idUser = idUser;
     }
 
     public String getBody() {
@@ -28,5 +30,13 @@ public class Notification implements Serializable {
 
     public void setSubject(String subject) {
         this.subject = subject;
+    }
+
+    public int getIdUser() {
+        return idUser;
+    }
+
+    public void setIdUser(int idUser) {
+        this.idUser = idUser;
     }
 }
