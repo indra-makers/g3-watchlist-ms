@@ -2,6 +2,7 @@ package com.co.indra.coinmarketcap.watchlist.controllers;
 
 import com.co.indra.coinmarketcap.watchlist.config.ErrorCodes;
 import com.co.indra.coinmarketcap.watchlist.config.Routes;
+import com.co.indra.coinmarketcap.watchlist.externalsAPI.users.model.UserModel;
 import com.co.indra.coinmarketcap.watchlist.model.entities.CoinPriceAlert;
 import com.co.indra.coinmarketcap.watchlist.model.entities.WatchList;
 import com.co.indra.coinmarketcap.watchlist.model.entities.WatchListCoin;
@@ -12,15 +13,21 @@ import com.co.indra.coinmarketcap.watchlist.repositories.WatchListRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+import org.springframework.web.client.RestTemplate;
 
 import javax.transaction.Transactional;
 import java.util.List;
@@ -44,6 +51,12 @@ public class WatchListControllerTest {
 
    @Autowired
    private ObjectMapper objectMapper;
+
+   @MockBean
+   private RestTemplate restTemplate;
+
+   @Value("${api.users.url}")
+   private String apiUrl;
 
    @Test
    public void createWatchListHappy() throws Exception {
@@ -248,6 +261,13 @@ public class WatchListControllerTest {
    @Test
    @Sql("/testdata/addSameCoinAlertToWatchlist.sql")
    public void addSameCoinAlertToWatchlist() throws Exception {
+      UserModel userModel = new UserModel(5, "hola", "asdasd@gmail.com", 2l);
+      ResponseEntity<UserModel> entity = new ResponseEntity(userModel, HttpStatus.OK);
+      Mockito.when(restTemplate.getForEntity(
+              Mockito.anyString(),
+              Mockito.<Class<UserModel>>any()
+      )).thenReturn(entity);
+
       MockHttpServletRequestBuilder request = MockMvcRequestBuilders
               .post(Routes.WATCHLIST_RESOURCE + Routes.ADD_COIN_ALERT_TO_WATCHLIST, 999)
               .content("{\n" +
