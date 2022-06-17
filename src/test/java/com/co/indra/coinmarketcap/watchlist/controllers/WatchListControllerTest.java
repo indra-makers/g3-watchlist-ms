@@ -14,6 +14,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -57,6 +58,9 @@ public class WatchListControllerTest {
 
    @Value("${api.users.url}")
    private String apiUrl;
+
+   @MockBean
+   private RabbitTemplate rabbitTemplate;
 
    @Test
    public void createWatchListHappy() throws Exception {
