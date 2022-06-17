@@ -64,6 +64,7 @@ public class WatchListControllerTest {
 
    @Test
    public void createWatchListHappy() throws Exception {
+      
       MockHttpServletRequestBuilder request = MockMvcRequestBuilders.post(Routes.WATCHLIST_RESOURCE).content("{\n"
             + "    \"idUser\": 1,\n" + "    \"watchListName\": \"Mi primera watchlist\",\n"
             + "    \"watchListDescription\": \"Lorem ipsum dolor sit amet. Id maiores ratione quo nulla placeat rem molestias architecto quo obcaecati enim beatae eligendi hic sunt harum ea omnis obcaecati.\",\n"
