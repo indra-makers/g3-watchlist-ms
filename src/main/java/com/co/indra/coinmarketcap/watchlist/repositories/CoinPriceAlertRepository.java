@@ -20,6 +20,7 @@ class CoinPriceAlertRowMapper implements RowMapper<CoinPriceAlert> {
         coinPriceAlert.setGoalPrice(rs.getDouble("goal_price"));
         coinPriceAlert.setSymbol(rs.getString("symbol"));
         coinPriceAlert.setNotified(rs.getBoolean("isNotified"));
+        coinPriceAlert.setIdUser(rs.getInt("id_user"));
         return coinPriceAlert;
     }
 }
@@ -33,19 +34,19 @@ public class CoinPriceAlertRepository {
 
     public List<CoinPriceAlert> findCoinPriceAlertBySymbolAndIdWatchListCoin(String symbol, int idWatchlistCoin){
         return template.query(
-                "SELECT id_coin_price_alert, goal_price, symbol, id_watchlist_coin, isNotified FROM tbl_coin_price_alerts WHERE id_watchlist_coin =? AND symbol =?",
+                "SELECT id_coin_price_alert, goal_price, symbol, id_watchlist_coin, isNotified, id_user FROM tbl_coin_price_alerts WHERE id_watchlist_coin =? AND symbol =?",
                 new CoinPriceAlertRowMapper(), idWatchlistCoin, symbol);
     }
 
     public List<CoinPriceAlert> findCoinsPriceAlertBySymbol(String symbol){
         return template.query(
-                "SELECT id_coin_price_alert, goal_price, symbol, id_watchlist_coin, isNotified FROM tbl_coin_price_alerts WHERE isNotified = false AND symbol =?",
+                "SELECT id_coin_price_alert, goal_price, symbol, id_watchlist_coin, isNotified, id_user FROM tbl_coin_price_alerts WHERE isNotified = false AND symbol =?",
                 new CoinPriceAlertRowMapper(),symbol);
     }
 
     public void addCoinAlertToWatchlist(Long idWatchlist, CoinPriceAlert coinPriceAlert){
-        template.update("INSERT INTO tbl_coin_price_alerts(goal_price, symbol, id_watchlist_coin) values(?,?,?)",
-                coinPriceAlert.getGoalPrice(), coinPriceAlert.getSymbol(), idWatchlist);
+        template.update("INSERT INTO tbl_coin_price_alerts(goal_price, symbol, id_watchlist_coin, id_user) values(?,?,?,?)",
+                coinPriceAlert.getGoalPrice(), coinPriceAlert.getSymbol(), idWatchlist, coinPriceAlert.getIdUser());
     }
     public void setIsNotifiedTrue(CoinPriceAlert coinPriceAlert){
         template.update("UPDATE tbl_coin_price_alerts SET isNotified=? WHERE id_coin_price_alert = ?",

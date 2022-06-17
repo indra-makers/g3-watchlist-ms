@@ -36,6 +36,7 @@ public class ExternalApiUsersTest {
     @MockBean
     private RestTemplate restTemplate;
 
+
     @Test
     public void findUserById() throws Exception {
         UserModel mockedBody = new UserModel(5, "juli",
